@@ -19,6 +19,7 @@ package com.example.android.marsrealestate.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -32,6 +33,8 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
+        // Deprecated
+        //.addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BASE_URL)
         .build()
 /*
@@ -41,8 +44,7 @@ Annotate the method with @GET, specifying the endpoint for the JSON real estate 
 * */
 interface MarsApiService {
     @GET("realestate")
-    fun getProperties():
-            Call<List<MarsProperty>>
+    suspend fun getProperties(): List<MarsProperty>
 }
 // Passing in the service API you just defined, create a public object called MarsApi
 // to expose the Retrofit service to the rest of the app:
